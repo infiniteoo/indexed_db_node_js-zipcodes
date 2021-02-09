@@ -199,7 +199,7 @@ $(document).ready(function () {
       addRowPos: "top", // when adding a new row, add it to the top of the table
       history: true, // allow undo and redo actions on the table
       pagination: "local", // paginate the data
-      paginationSize: 7, // allow 7 rows per page of data
+      paginationSize: 15, // allow 7 rows per page of data
       movableColumns: true, // allow column order to be changed
       resizableRows: true, // allow row order to be changed
       initialSort: [ // set the initial sort order of the data
@@ -216,6 +216,7 @@ window.addEventListener("load", () => {
   const cityOutput = document.querySelector("#cityOutput")
   const getRandomProfile = document.querySelector("#getRandomProfile")
 
+  // we removed the button. keeping the code for reference
   $(getRandomProfile).on('click', function () {
     getAllFromDB((callback) => {
       const rando = Math.floor((Math.random() * callback.length) + 1)
