@@ -136,7 +136,7 @@ function lookupZipcodes (city, callback) {
   })
 }
 
-function getAll (callback) {
+function getAllFromDB (callback) {
   withDB((db) => {
     const transaction = db.transaction(["zipcodes"])
     const store = transaction.objectStore("zipcodes")
@@ -179,13 +179,39 @@ function updateProfile (profile) {
   profileContainer.innerHTML = template
 }
 
+$(document).ready(function () {
+  getAllFromDB((callback) => {
+    const rando = Math.floor((Math.random() * callback.length) + 1)
+    updateProfile(callback[rando])
+    const tabledata = [...callback]
+    const table = new Tabulator("#example-table", {
+      height: "100%",
+      data: tabledata, // load row data from array
+      layout: "fitColumns", // fit columns to width of table
+      responsiveLayout: "hide", // hide columns that dont fit on the table
+      tooltips: true, // show tool tips on cells
+      addRowPos: "top", // when adding a new row, add it to the top of the table
+      history: true, // allow undo and redo actions on the table
+      pagination: "local", // paginate the data
+      paginationSize: 7, // allow 7 rows per page of data
+      movableColumns: true, // allow column order to be changed
+      resizableRows: true, // allow row order to be changed
+      initialSort: [ // set the initial sort order of the data
+        { column: "name", dir: "asc" }
+      ],
+      autoColumns: true
+
+    })
+  })
+})
+
 window.addEventListener("load", () => {
   const zipcodeInput = document.querySelector("#zipcodeInput")
   const cityOutput = document.querySelector("#cityOutput")
   const getRandomProfile = document.querySelector("#getRandomProfile")
 
   $(getRandomProfile).on('click', function () {
-    getAll((callback) => {
+    getAllFromDB((callback) => {
       const rando = Math.floor((Math.random() * callback.length) + 1)
       updateProfile(callback[rando])
     })
