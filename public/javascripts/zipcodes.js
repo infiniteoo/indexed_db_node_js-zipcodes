@@ -1,4 +1,5 @@
 /* eslint-disable quotes */
+
 function withDB (callback) {
   const request = indexedDB.open("zipcodes", 1) // Request v1 of the database
   request.onerror = console.error // Log any errors
@@ -150,14 +151,43 @@ function getAll (callback) {
   })
 }
 
+function updateProfile (profile) {
+  const template = `
+<h2>${profile.name}</h2>
+<div class='row'>
+      <div class='col-md-4'>
+         <img height='250' width='250'/>
+      </div>
+      <div class='col-md-4'>
+         <h3>Age: ${profile.age}</h3>
+         <h3>City: ${profile.city}</h3>
+         <h3>State: ${profile.state}</h3>
+         <h3>Company: ${profile.company}</h3>
+         <h3>Email: ${profile.email}</h3>
+      </div>
+      <div class='col-md-4'>
+         <h3>Gender: ${profile.gender}</h3>
+         <h3>Phone: ${profile.phone}</h3>
+         <h3>Zipcode: ${profile.zipcode}</h3>
+         <h3>Latitude: ${profile.latitude}</h3>
+         <h3>Longitude: ${profile.longitude}</h3>
+      </div>
+   </div>
+`
+
+  const profileContainer = document.querySelector("#profile-data")
+  profileContainer.innerHTML = template
+}
+
 window.addEventListener("load", () => {
   const zipcodeInput = document.querySelector("#zipcodeInput")
   const cityOutput = document.querySelector("#cityOutput")
-  const getAllButton = document.querySelector("#getAllButton")
+  const getRandomProfile = document.querySelector("#getRandomProfile")
 
-  $(getAllButton).on('click', function () {
+  $(getRandomProfile).on('click', function () {
     getAll((callback) => {
-      console.log(callback)
+      const rando = Math.floor((Math.random() * callback.length) + 1)
+      updateProfile(callback[rando])
     })
   })
 
