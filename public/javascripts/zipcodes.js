@@ -185,6 +185,12 @@ $(document).ready(function () {
     updateProfile(callback[rando])
     const tabledata = [...callback]
     const table = new Tabulator("#example-table", {
+      rowClick:function(e, row){
+          console.log("e, row:", e,row)
+          updateProfile(row._row.data)
+            //e - the click event object
+            //row - row component
+            },
       height: "100%",
       data: tabledata, // load row data from array
       layout: "fitColumns", // fit columns to width of table
